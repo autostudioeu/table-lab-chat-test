@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Table Lab – Table chat</title>
+<style>body{font-family:system-ui;max-width:480px;margin:auto;padding:12px}#log{border:1px solid #ccc;height:55vh;overflow:auto;padding:8px;border-radius:8px}
+.m{margin:6px 0;padding:6px 10px;border-radius:10px;max-width:80%}.table{background:#dcf8c6;margin-left:auto}.business{background:#eee}
+input,button{font-size:16px;padding:8px}#chat{display:none}</style>
+<script src="supabase.js"></script><script src="config.js"></script></head><body>
+<h2>Table Lab</h2>
+<div id="join">Table <input id="tno" type="number" min="1" style="width:5em"> Code <input id="code" style="width:6em"> <button id="go">Join</button></div>
+<div id="chat"><p id="who"></p><div id="log"></div>
+<form id="f"><input id="msg" style="width:75%" placeholder="Message to staff…" maxlength="1000"> <button>Send</button></form></div>
+<script>
+const C=window.TL_CONFIG, sb=supabase.createClient(C.url,C.key);
+const q=new URLSearchParams(location.search); if(q.get('t'))tno.value=q.get('t'); if(q.get('c'))code.value=q.get('c');
+let T,K;
+function add(m){const d=document.createElement('div');d.className='m '+m.sender;d.textContent=m.body;log.appendChild(d);log.scrollTop=1e9}
+go.onclick=async()=>{T=+tno.value;K=code.value.trim();if(!T||!K)return alert('Enter table and code');
+ join.style.display='none';chat.style.display='block';who.textContent=`Table ${T}`;
+ const {data}=await sb.from('messages').select('*').eq('restaurant_id',C.restaurantId).eq('table_no',T).eq('daily_code',K).order('created_at');
+ (data||[]).forEach(add);
+ sb.channel('t'+T).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:`restaurant_id=eq.${C.restaurantId}`},
+  p=>{const m=p.new;if(m.table_no===T&&m.daily_code===K&&m.sender==='business')add(m)}).subscribe();
+};
+f.onsubmit=async e=>{e.preventDefault();const body=msg.value.trim();if(!body)return;msg.value='';
+ const m={restaurant_id:C.restaurantId,table_no:T,daily_code:K,sender:'table',body};
+ const {error}=await sb.from('messages').insert(m);if(error)alert(error.message);else add(m)};
+</script></body></html>

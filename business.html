@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Table Lab – Business inbox</title>
+<style>body{font-family:system-ui;margin:12px}#grid{display:flex;flex-wrap:wrap;gap:12px}
+.card{border:1px solid #ccc;border-radius:8px;width:300px;padding:8px}.card h3{margin:0 0 6px}.log{height:220px;overflow:auto}
+.m{margin:4px 0;padding:4px 8px;border-radius:8px}.table{background:#eee}.business{background:#dcf8c6;text-align:right}.new{border-color:#e33}</style>
+<script src="supabase.js"></script><script src="config.js"></script></head><body>
+<h2>Live inbox – <span id="rid"></span> <small id="st">connecting…</small></h2><div id="grid"></div>
+<script>
+const C=window.TL_CONFIG, sb=supabase.createClient(C.url,C.key); rid.textContent=C.restaurantId;
+const cards={};
+function card(m){const k=m.table_no+'|'+m.daily_code;if(cards[k])return cards[k];
+ const d=document.createElement('div');d.className='card';d.innerHTML=`<h3></h3><div class="log"></div><form><input style="width:70%" maxlength="1000" placeholder="Reply…"><button>Send</button></form>`;
+ d.querySelector('h3').textContent=`Table ${m.table_no} (code ${m.daily_code})`;
+ d.onclick=()=>d.classList.remove('new');
+ d.querySelector('form').onsubmit=async e=>{e.preventDefault();const i=e.target.querySelector('input'),body=i.value.trim();if(!body)return;i.value='';
+  const r={restaurant_id:C.restaurantId,table_no:m.table_no,daily_code:m.daily_code,sender:'business',body};
+  const {error}=await sb.from('messages').insert(r);if(error)alert(error.message);else add(r)};
+ grid.prepend(d);return cards[k]=d}
+function add(m,fresh){const c=card(m),l=c.querySelector('.log'),x=document.createElement('div');x.className='m '+m.sender;x.textContent=m.body;l.appendChild(x);l.scrollTop=1e9;if(fresh)c.classList.add('new')}
+(async()=>{const {data}=await sb.from('messages').select('*').eq('restaurant_id',C.restaurantId).order('created_at');(data||[]).forEach(m=>add(m));
+ sb.channel('biz').on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:`restaurant_id=eq.${C.restaurantId}`},
+  p=>{if(p.new.sender==='table')add(p.new,true)}).subscribe(s=>st.textContent=s==='SUBSCRIBED'?'● live':s)})();
+</script></body></html>
