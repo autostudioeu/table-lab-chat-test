@@ -1,0 +1,43 @@
+#admin{max-width:1100px;margin:0 auto;padding:0 0 40px}
+.cols{display:grid;grid-template-columns:1fr;gap:12px;padding:12px}
+@media(min-width:760px){.cols{grid-template-columns:1fr 1fr}}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.box h2{margin:0 0 8px;font-size:18px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:24px;text-align:center;color:var(--muted)}
+.drop.over{border-color:var(--pri);background:#fbe9e4}
+.form{display:grid;gap:6px}.form input,.form select,.tbl input,.tbl select{font:inherit;min-height:40px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;width:100%}
+.err{margin:12px;padding:12px;border-radius:10px;background:#fde2df;color:#7a1b0c}
+.err .btn{margin-top:8px}
+.prog{margin:12px}.steps{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.steps li{padding:4px 8px;border-radius:12px;background:#eee;font-size:13px}.steps li.on{background:var(--pri);color:#fff}.steps li.ok{background:#cfe9d7}
+.bar{height:10px;background:#eee;border-radius:5px;overflow:hidden;margin:10px 0}.bar>i{display:block;height:100%;background:var(--pri);width:0}
+.tblwrap{overflow-x:auto;margin:0 12px}
+.tbl{border-collapse:collapse;width:100%;min-width:900px;background:#fff}
+.tbl th,.tbl td{border:1px solid var(--line);padding:4px;vertical-align:top;font-size:14px}
+.tbl tr.low>td{background:var(--warn)}
+.tbl .vrow{display:grid;grid-template-columns:1fr 1fr 80px 44px;gap:4px;margin-bottom:4px}
+.tbl input.bad{border-color:#c0392b;background:#fde2df}
+.tbl .w{font-size:12px;color:#7a5b00}
+.bar2{display:flex;flex-wrap:wrap;gap:8px;padding:12px}
+.chipsel label{display:inline-flex;align-items:center;gap:3px;margin-right:6px;font-size:13px}
+/* QA fixes: 44px inputs, 360px layout, stacked review rows on narrow screens */
+.form input,.form select,.tbl input,.tbl select{min-height:44px}
+.cols{grid-template-columns:minmax(0,1fr)}
+@media(min-width:760px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.box,.box p{overflow-wrap:anywhere;min-width:0}
+#admin .top{flex-wrap:wrap}
+#admin .top h1{flex-basis:100%;order:-1}
+@media(max-width:700px){
+  .tblwrap{overflow-x:visible;margin:0 8px}
+  .tbl{min-width:0;background:transparent}
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl tr{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:6px}
+  .tbl td{border:0;padding:4px 2px}
+  .tbl td::before{content:attr(data-label);display:block;font-size:12px;font-weight:600;color:var(--muted)}
+  .tbl tr.low{background:var(--warn)}.tbl tr.low>td{background:transparent}
+  .tbl .vrow{grid-template-columns:1fr 1fr 72px 44px}
+}
+/* NEW-01: fixed 24px chip checkboxes */
+.chipsel input[type=checkbox]{width:24px;height:24px;min-height:24px;margin:0 4px 0 0;flex:0 0 24px}
+.chipsel label{min-height:44px}

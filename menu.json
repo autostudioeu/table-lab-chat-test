@@ -1,0 +1,36 @@
+{
+  "restaurants": {
+    "demo": {
+      "name": "Demo Restaurant",
+      "whatsapp": "34900000000",
+      "currency": "EUR",
+      "categories": [
+        {
+          "id": "tapas",
+          "name": "Para compartir",
+          "items": [
+            {"id":"bravas","name":"Patatas bravas","description":"Patatas crujientes con salsa brava de la casa.","price":5.5,"allergens":["Gluten"]},
+            {"id":"croquetas","name":"Croquetas caseras","description":"Selección del día, seis unidades.","price":8,"allergens":["Gluten","Lácteos"]},
+            {"id":"tortilla","name":"Tortilla de patatas","description":"Tortilla española tradicional.","price":7.5,"allergens":["Huevo"]}
+          ]
+        },
+        {
+          "id": "principales",
+          "name": "Platos principales",
+          "items": [
+            {"id":"pollo","name":"Pollo al horno","description":"Con patatas y hierbas mediterráneas.","price":13.9,"allergens":[]},
+            {"id":"veg","name":"Verduras a la plancha","description":"Verduras de temporada con aceite de oliva.","price":11.5,"allergens":[]}
+          ]
+        },
+        {
+          "id": "bebidas",
+          "name": "Bebidas",
+          "items": [
+            {"id":"agua","name":"Agua mineral","description":"Con o sin gas.","price":2,"allergens":[]},
+            {"id":"limonada","name":"Limonada casera","description":"Limón recién exprimido.","price":3.5,"allergens":[]}
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,174 @@
+[
+ {
+  "category": "Entrantes",
+  "name": "Patatas Bravas Placeholder",
+  "description": "Fried potatoes with spicy demo sauce",
+  "price_eur": 6.5,
+  "allergens": [
+   "egg"
+  ]
+ },
+ {
+  "category": "Entrantes",
+  "name": "Sample Croquetas",
+  "description": "Ham-style demo croquettes (per unit)",
+  "price_eur": 2.5,
+  "allergens": [
+   "gluten",
+   "milk",
+   "egg"
+  ]
+ },
+ {
+  "category": "Entrantes",
+  "name": "Test Pimientos de Padrón",
+  "description": "Blistered green peppers with sea salt",
+  "price_eur": 7.0,
+  "allergens": []
+ },
+ {
+  "category": "Entrantes",
+  "name": "Mock Ensaladilla",
+  "description": "Potato salad with tuna and mayonnaise",
+  "price_eur": 8.5,
+  "allergens": [
+   "egg",
+   "fish"
+  ]
+ },
+ {
+  "category": "Entrantes",
+  "name": "Demo Pan con Tomate",
+  "description": "Toasted bread with tomato and olive oil",
+  "price_eur": 3.5,
+  "allergens": [
+   "gluten"
+  ]
+ },
+ {
+  "category": "Pescados",
+  "name": "Sample Calamares",
+  "description": "Battered squid rings with lemon",
+  "price_eur": [
+   12.0,
+   18.0
+  ],
+  "allergens": [
+   "gluten",
+   "molluscs",
+   "egg"
+  ]
+ },
+ {
+  "category": "Pescados",
+  "name": "Placeholder Gambas al Ajillo",
+  "description": "Prawns in garlic and chili oil",
+  "price_eur": 14.5,
+  "allergens": [
+   "crustaceans"
+  ]
+ },
+ {
+  "category": "Pescados",
+  "name": "Demo Pulpo a la Gallega",
+  "description": "Octopus with paprika and potato",
+  "price_eur": [
+   15.0,
+   22.0
+  ],
+  "allergens": [
+   "molluscs"
+  ]
+ },
+ {
+  "category": "Carnes",
+  "name": "Test Albóndigas",
+  "description": "Meatballs in tomato sauce",
+  "price_eur": 9.5,
+  "allergens": [
+   "gluten",
+   "egg",
+   "celery"
+  ]
+ },
+ {
+  "category": "Carnes",
+  "name": "Mock Pinchos Morunos",
+  "description": "Spiced pork skewers",
+  "price_eur": 11.0,
+  "allergens": [
+   "mustard"
+  ]
+ },
+ {
+  "category": "Carnes",
+  "name": "Sample Secreto Ibérico",
+  "description": "Grilled pork cut with potatoes",
+  "price_eur": 17.5,
+  "allergens": []
+ },
+ {
+  "category": "Arroces",
+  "name": "Demo Paella",
+  "description": "Seafood rice (per person, min. 2)",
+  "price_eur": 19.0,
+  "allergens": [
+   "crustaceans",
+   "molluscs",
+   "fish"
+  ]
+ },
+ {
+  "category": "Arroces",
+  "name": "Placeholder Arroz Negro",
+  "description": "Squid-ink rice with aioli",
+  "price_eur": 18.0,
+  "allergens": [
+   "molluscs",
+   "egg"
+  ]
+ },
+ {
+  "category": "Postres",
+  "name": "Sample Crema Catalana",
+  "description": "Custard with burnt sugar",
+  "price_eur": 6.0,
+  "allergens": [
+   "milk",
+   "egg"
+  ]
+ },
+ {
+  "category": "Postres",
+  "name": "Demo Tarta de Queso",
+  "description": "Baked cheesecake",
+  "price_eur": [
+   6.5,
+   9.0
+  ],
+  "allergens": [
+   "milk",
+   "egg",
+   "gluten"
+  ]
+ },
+ {
+  "category": "Bebidas",
+  "name": "Test Sangría",
+  "description": "House sangria (glass / jug)",
+  "price_eur": [
+   5.0,
+   16.0
+  ],
+  "allergens": [
+   "sulphites"
+  ]
+ },
+ {
+  "category": "Bebidas",
+  "name": "Mock Agua Mineral",
+  "description": "Still water 50 cl",
+  "price_eur": 2.5,
+  "allergens": []
+ }
+]
