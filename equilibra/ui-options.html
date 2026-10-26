@@ -1,0 +1,104 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Equilibra · UI directions</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:#101114;color:#eee;font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden}
+header{padding:10px 14px 6px;text-align:center}h1{font-size:15px;font-weight:700}.note{font-size:11px;color:#9a9aa2;margin-top:2px}
+.tabs{display:flex;gap:6px;justify-content:center;padding:6px}.tabs button{flex:0 0 52px;height:34px;border-radius:17px;border:1px solid #333;background:#1b1c20;color:#ccc;font-weight:700;font-size:14px}
+.tabs button.on{background:#E7C95C;color:#1d1d1f;border-color:#E7C95C}
+.track{display:flex;height:calc(100% - 178px);transition:transform .35s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
+.slide{flex:0 0 100vw;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:4px}
+canvas{height:min(100%,calc(92vw*760/360));width:auto;aspect-ratio:360/760;border-radius:30px;box-shadow:0 0 0 6px #2a2b30,0 20px 50px #000a}
+.cap{padding:8px 16px 10px;text-align:center;font-size:12.5px;line-height:1.4;color:#d6d6dc;min-height:58px}.cap b{color:#E7C95C}
+</style></head><body>
+<header><h1>Equilibra — 4 animated design directions</h1><div class="note">Home screen mockups · all scores are EXAMPLE DATA · react-native-skia achievable · swipe or tap A–D</div></header>
+<div class="tabs"><button class="on">A</button><button>B</button><button>C</button><button>D</button></div>
+<div class="track" id="tr"><div class="slide"><canvas data-o="0"></canvas></div><div class="slide"><canvas data-o="1"></canvas></div><div class="slide"><canvas data-o="2"></canvas></div><div class="slide"><canvas data-o="3"></canvas></div></div>
+<div class="cap" id="cap"></div>
+<script>
+const CAPS=["<b>A · Calm Aurora</b> — slow breathing aurora gradient, soft glow halos behind each score-colored tile, a breathing ring on Overall. Effort: <b>small</b>.",
+"<b>B · Liquid Balance</b> — every life area becomes a glass vessel filled to its score with a gently waving liquid; Overall is a sloshing orb. Effort: <b>medium</b>.",
+"<b>C · Wheel of Life</b> — the 9 areas bloom as petals of an animated balance wheel around the Overall score, with compact area chips below. Effort: <b>medium–large</b>.",
+"<b>D · Night Garden</b> — dark mode where each area is a glowing star sized/lit by its score, connected by a drawing constellation with drifting firefly particles. Effort: <b>large</b>."];
+// EXAMPLE DATA — 9 default Equilibra areas, scores 1–5
+const A=[["Family",4.2],["Friends",3.6],["Relationship",4.6],["Health",2.8],["Career",3.4],["Finance",2.2],["Service",3.0],["Spirituality",3.8],["Leisure",4.4]];
+const SC=['#FF8A8A','#FFB36B','#E7C95C','#9CCB82','#5BC49A'];
+const hx=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));
+function col(v,a=1){const x=Math.min(4,Math.max(0,v-1)),i=Math.min(3,Math.floor(x)),f=x-i,p=hx(SC[i]),q=hx(SC[i+1]);return`rgba(${p.map((c,k)=>Math.round(c+(q[k]-c)*f)).join(',')},${a})`}
+const OV=A.reduce((s,a)=>s+a[1],0)/A.length;
+const W=360,H=760,dpr=Math.min(2,devicePixelRatio||1),ease=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function tx(c,s,x,y,sz,w,cl,al='left'){c.font=`${w} ${sz}px system-ui,Roboto,sans-serif`;c.fillStyle=cl;c.textAlign=al;c.fillText(s,x,y)}
+function status(c,cl){tx(c,'9:41',22,22,12,600,cl);tx(c,'●●● ▮',338,22,10,600,cl,'right')}
+function exTag(c,y,cl){tx(c,'EXAMPLE DATA',W/2,y,9,800,cl,'center')}
+function header(c,cl,sub){tx(c,'Equilibra',20,62,26,800,cl);tx(c,'See what matters. Shape what comes next.',20,82,12.5,400,sub);c.beginPath();c.arc(326,56,19,0,7);c.fillStyle=cl==='#1D1D1F'?'#fff':'#ffffff18';c.fill();tx(c,'⚙',326,62,17,400,cl,'center')}
+function actions(c,y,dark,t){const bg=dark?'#ffffff12':'#ffffffcc',fg=dark?'#F5F5F7':'#1D1D1F',sub=dark?'#9a9aa2':'#8E8E93';
+ [["Customize tiles","Names & colors",16],["Goals","3 active · 1 favorite",188]].forEach(([a,b,x])=>{rr(c,x,y,156,56,18);c.fillStyle=bg;c.fill();tx(c,a,x+14,y+25,13,700,fg);tx(c,b,x+14,y+42,10.5,400,sub)});
+ rr(c,16,y+66,328,46,16);c.fillStyle=dark?'#ffffff0d':'#EAEAEEcc';c.fill();tx(c,'History',32,y+94,13,700,fg);tx(c,'4 saved snapshots ›',328,y+94,11,500,sub,'right');
+ rr(c,16,y+122,328,52,18);const g=c.createLinearGradient(16,0,344,0);g.addColorStop(0,'#E7C95C40');g.addColorStop((Math.sin(t/1400)+1)/2,'#ffffff55');g.addColorStop(1,'#E7C95C30');c.fillStyle=g;c.fill();tx(c,'Unlock Equilibra Pro',32,y+144,13,800,fg);tx(c,'Unlimited snapshots, goals and detailed history',32,y+161,10,400,sub);exTag(c,y+194,sub)}
+const tileXY=i=>[16+(i%3)*112,226+Math.floor(i/3)*112];
+// ---------- A Calm Aurora
+function dA(c,t){const T=t/1000;c.fillStyle='#F4F2F7';c.fillRect(0,0,W,H);
+ [[ '#9CCB82',80,180],['#8FA8FF',300,120],['#E79CC7',220,560],['#E7C95C',60,640]].forEach(([k,x,y],i)=>{const X=x+Math.sin(T*.3+i)*40,Y=y+Math.cos(T*.25+i*2)*50,g=c.createRadialGradient(X,Y,0,X,Y,230);g.addColorStop(0,k+'66');g.addColorStop(1,k+'00');c.fillStyle=g;c.fillRect(0,0,W,H)});
+ status(c,'#1D1D1F');header(c,'#1D1D1F','#6E6E73');
+ const b=(Math.sin(T*1.2)+1)/2,e=ease(T/1.6);rr(c,16,100,328,112,26);c.fillStyle=col(OV,.92);c.shadowColor=col(OV,.7);c.shadowBlur=20+b*16;c.fill();c.shadowBlur=0;
+ tx(c,'OVERALL',34,130,11,800,'#1D1D1Fbb');tx(c,(OV*e).toFixed(1),34,174,40,800,'#1D1D1F');tx(c,'average of answered areas',34,196,11,400,'#1D1D1Faa');
+ c.lineWidth=7;c.strokeStyle='#ffffff66';c.beginPath();c.arc(290,156,30,0,7);c.stroke();c.strokeStyle='#fff';c.lineCap='round';c.beginPath();c.arc(290,156,30,-1.57,-1.57+6.28*OV/5*e);c.stroke();
+ c.beginPath();c.arc(290,156,10+b*6,0,7);c.fillStyle=`rgba(255,255,255,${.5+b*.4})`;c.fill();
+ A.forEach(([n,v],i)=>{const[x,y]=tileXY(i),p=ease(T*1.4-i*.12);c.globalAlpha=p;const yy=y+(1-p)*20,pul=(Math.sin(T*1.1+i*.7)+1)/2;
+  c.shadowColor=col(v,.8);c.shadowBlur=10+pul*14;rr(c,x,yy,104,104,24);c.fillStyle=col(v);c.fill();c.shadowBlur=0;
+  const g=c.createLinearGradient(x,yy,x,yy+104);g.addColorStop(0,'#ffffff55');g.addColorStop(1,'#ffffff00');c.fillStyle=g;c.fill();
+  c.beginPath();c.arc(x+24,yy+24,13,0,7);c.fillStyle='#ffffff88';c.fill();tx(c,n[0],x+24,yy+29,13,800,'#1D1D1F','center');
+  tx(c,n,x+12,yy+72,12.5,700,'#1D1D1F');tx(c,v.toFixed(1),x+12,yy+93,17,800,'#1D1D1F');c.globalAlpha=1});
+ actions(c,566,false,t)}
+// ---------- B Liquid Balance
+function wave(c,x,y,w,h,lvl,T,ph,cl,r){c.save();rr(c,x,y,w,h,r);c.clip();const top=y+h*(1-lvl);
+ for(let k=0;k<2;k++){c.beginPath();c.moveTo(x,y+h);for(let i=0;i<=w;i+=4)c.lineTo(x+i,top+Math.sin(i/w*6.28*1.2+T*2.2*(k?1.3:1)+ph+k)*(3.5-k));c.lineTo(x+w,y+h);c.closePath();c.fillStyle=k?cl:cl.replace(/[\d.]+\)$/,'.45)');c.fill()}
+ for(let j=0;j<3;j++){const by=y+h-((T*22+j*37+ph*20)%(h*lvl+1));c.beginPath();c.arc(x+12+((j*31+ph*13)%(w-24)),by,1.8,0,7);c.fillStyle='#ffffffaa';c.fill()}c.restore()}
+function dB(c,t){const T=t/1000;const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#EEF5F7');g.addColorStop(1,'#F6F2EC');c.fillStyle=g;c.fillRect(0,0,W,H);
+ status(c,'#1D1D1F');header(c,'#1D1D1F','#6E6E73');
+ rr(c,16,100,328,112,26);c.fillStyle='#ffffffcc';c.fill();tx(c,'OVERALL',34,130,11,800,'#8E8E93');const e=ease(T/2);tx(c,(OV*e).toFixed(1),34,174,40,800,'#1D1D1F');tx(c,'/ 5 · average of answered areas',34,196,11,400,'#8E8E93');
+ c.save();c.beginPath();c.arc(284,156,44,0,7);c.clip();c.fillStyle='#E9EEF2';c.fillRect(230,100,110,112);const lv=OV/5*e,tilt=Math.sin(T*1.3)*6;
+ c.beginPath();c.moveTo(240,200);for(let i=0;i<=88;i+=3)c.lineTo(240+i,200-88*lv+Math.sin(i/14+T*2.5)*3+tilt*(i-44)/44);c.lineTo(328,200);c.fillStyle=col(OV);c.fill();c.restore();
+ c.lineWidth=3;c.strokeStyle='#ffffff';c.beginPath();c.arc(284,156,44,0,7);c.stroke();c.beginPath();c.arc(270,138,10,3.6,4.6);c.strokeStyle='#ffffffcc';c.stroke();
+ A.forEach(([n,v],i)=>{const[x,y]=tileXY(i);rr(c,x,y,104,104,24);c.fillStyle='#ffffffb0';c.fill();c.lineWidth=1;c.strokeStyle='#00000010';c.stroke();
+  wave(c,x,y,104,104,(v/5)*ease(T/1.8-i*.08),T,i*1.7,col(v,.95),24);
+  tx(c,n,x+12,y+24,12.5,700,'#1D1D1F');tx(c,v.toFixed(1),x+12,y+46,18,800,'#1D1D1F');
+  c.save();rr(c,x,y,104,104,24);c.clip();const s=c.createLinearGradient(x,y,x+104,y);s.addColorStop(0,'#ffffff00');s.addColorStop(.15,'#ffffff55');s.addColorStop(.3,'#ffffff00');c.fillStyle=s;c.fillRect(x,y,104,104);c.restore()});
+ actions(c,566,false,t)}
+// ---------- C Wheel of Life
+function dC(c,t){const T=t/1000;c.fillStyle='#FBF8F3';c.fillRect(0,0,W,H);status(c,'#1D1D1F');header(c,'#1D1D1F','#6E6E73');
+ const cx=180,cy=262,R=120,n=9;c.save();c.translate(cx,cy);c.rotate(Math.sin(T*.25)*.05);
+ for(let k=1;k<=5;k++){c.beginPath();c.arc(0,0,R*k/5,0,7);c.strokeStyle='#00000012';c.lineWidth=1;c.stroke()}
+ A.forEach(([nm,v],i)=>{const a0=i/n*6.28-1.57,a1=a0+6.28/n,p=ease(T*1.2-i*.1),r=R*(v/5)*p*(1+Math.sin(T*1.4+i)*.02);
+  const g=c.createRadialGradient(0,0,10,0,0,r);g.addColorStop(0,col(v,.25));g.addColorStop(1,col(v,.95));
+  c.beginPath();c.moveTo(0,0);c.arc(0,0,r,a0+.03,a1-.03);c.closePath();c.fillStyle=g;c.shadowColor=col(v,.6);c.shadowBlur=12;c.fill();c.shadowBlur=0;
+  const am=(a0+a1)/2;c.save();c.rotate(-Math.sin(T*.25)*.05);tx(c,nm,Math.cos(am)*(R+18),Math.sin(am)*(R+18)+4,9,700,'#6E6E73','center');c.restore()});
+ const b=(Math.sin(T*1.2)+1)/2;c.beginPath();c.arc(0,0,36+b*2,0,7);c.fillStyle='#fff';c.shadowColor='#0002';c.shadowBlur=14;c.fill();c.shadowBlur=0;c.restore();
+ tx(c,(OV*ease(T/2)).toFixed(1),cx,cy+6,24,800,'#1D1D1F','center');tx(c,'OVERALL',cx,cy+20,8,800,'#8E8E93','center');
+ A.forEach(([nm,v],i)=>{const x=16+(i%3)*112,y=410+Math.floor(i/3)*44;rr(c,x,y,104,36,14);c.fillStyle='#fff';c.fill();c.beginPath();c.arc(x+16,y+18,6,0,7);c.fillStyle=col(v);c.fill();
+  tx(c,nm.length>9?nm.slice(0,8)+'.':nm,x+28,y+22,11,600,'#1D1D1F');tx(c,v.toFixed(1),x+96,y+22,11,800,'#1D1D1F','right')});
+ rr(c,16,544,328,0,0);actions(c,548,false,t)}
+// ---------- D Night Garden
+const P=[...Array(40)].map((_,i)=>({x:(i*97)%360,y:(i*211)%760,s:.4+(i%5)*.15,p:i}));
+const POS=[[90,170],[180,140],[270,175],[60,270],[180,250],[300,270],[95,360],[180,385],[270,355]];
+function dD(c,t){const T=t/1000;const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0B1026');g.addColorStop(1,'#1A1430');c.fillStyle=g;c.fillRect(0,0,W,H);
+ P.forEach(p=>{const x=(p.x+Math.sin(T*.4+p.p)*20)%360,y=(p.y-T*8*p.s+7600)%760,a=(Math.sin(T*1.5+p.p)+1)/2;c.beginPath();c.arc(x,y,1.2+p.s,0,7);c.fillStyle=`rgba(231,201,92,${.15+a*.5})`;c.fill()});
+ status(c,'#F5F5F7');header(c,'#F5F5F7','#9a9aa2');
+ const order=[0,1,2,5,4,3,6,7,8],L=Math.min(8,T*2.5);c.strokeStyle='#ffffff40';c.lineWidth=1.2;c.beginPath();
+ for(let k=0;k<=L;k++){const[x,y]=POS[order[k]];if(k===0)c.moveTo(x,y);else{const[px,py]=POS[order[k-1]],f=Math.min(1,L-k+1);c.lineTo(px+(x-px)*f,py+(y-py)*f)}}c.stroke();
+ A.forEach(([n,v],i)=>{const[x,y]=POS[i],p=ease(T*1.3-i*.12),tw=(Math.sin(T*2+i*1.3)+1)/2,r=(6+v*3)*p;
+  const gg=c.createRadialGradient(x,y,0,x,y,r*3.2);gg.addColorStop(0,col(v,.9));gg.addColorStop(.3,col(v,.35+tw*.15));gg.addColorStop(1,col(v,0));c.fillStyle=gg;c.beginPath();c.arc(x,y,r*3.2,0,7);c.fill();
+  c.beginPath();c.arc(x,y,r*.55,0,7);c.fillStyle='#fff';c.fill();c.globalAlpha=p;tx(c,n,x,y+r+22,10.5,600,'#D8D8E0','center');tx(c,v.toFixed(1),x,y+r+35,10,800,col(v),'center');c.globalAlpha=1});
+ rr(c,16,448,328,92,24);c.fillStyle='#ffffff10';c.fill();c.strokeStyle='#ffffff22';c.stroke();
+ tx(c,'OVERALL',34,476,11,800,'#9a9aa2');tx(c,(OV*ease(T/2)).toFixed(1),34,518,36,800,col(OV));tx(c,'average of 9 areas',112,516,11,400,'#9a9aa2');
+ const b=(Math.sin(T*1.1)+1)/2,gg=c.createRadialGradient(296,494,0,296,494,40);gg.addColorStop(0,col(OV,.9));gg.addColorStop(1,col(OV,0));c.fillStyle=gg;c.beginPath();c.arc(296,494,26+b*10,0,7);c.fill();
+ actions(c,552,true,t)}
+const D=[dA,dB,dC,dD];
+const cv=[...document.querySelectorAll('canvas')],cx=cv.map(c=>{c.width=W*dpr;c.height=H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);return x});
+let cur=0,t0=performance.now(),raf;const tr=document.getElementById('tr'),bt=[...document.querySelectorAll('.tabs button')];
+function go(i){cur=Math.max(0,Math.min(3,i));tr.style.transform=`translateX(${-cur*100}vw)`;bt.forEach((b,k)=>b.classList.toggle('on',k===cur));document.getElementById('cap').innerHTML=CAPS[cur];t0=performance.now()-(location.hash.includes('s')?8000:0)}
+bt.forEach((b,i)=>b.onclick=()=>go(i));let sx=null;tr.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});tr.addEventListener('touchend',e=>{if(sx==null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)go(cur+(d<0?1:-1));sx=null});
+function loop(n){if(!document.hidden){const c=cx[cur];c.clearRect(0,0,W,H);D[cur](c,n-t0)}raf=requestAnimationFrame(loop)}
+document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(raf);if(!document.hidden)raf=requestAnimationFrame(loop)});
+const q=parseInt(location.hash.slice(1)||0);go(isNaN(q)?0:q);cx.forEach((c,i)=>D[i](c,9000));raf=requestAnimationFrame(loop);
+</script></body></html>
