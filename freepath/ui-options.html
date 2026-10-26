@@ -1,0 +1,103 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Freepath · Skia UI options</title>
+<style>
+*{box-sizing:border-box;margin:0}html,body{height:100%;background:#07080d;color:#e9ecf5;font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden}
+#tabs{position:fixed;top:0;left:0;right:0;display:flex;gap:6px;justify-content:center;padding:8px;z-index:3;background:rgba(7,8,13,.85)}
+#tabs button{flex:1;max-width:90px;border:1px solid #2a2f40;background:#121521;color:#aab;border-radius:20px;padding:6px 0;font-weight:600;font-size:13px}
+#tabs button.on{background:#ff8a3d;color:#111;border-color:#ff8a3d}
+#track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}#track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;padding:46px 8px 6px}
+.cap{font-size:12.5px;line-height:1.3;text-align:center;color:#b8bfd3;max-width:380px;min-height:34px;margin-bottom:4px}.cap b{color:#fff}
+canvas{border-radius:26px;box-shadow:0 0 0 1px #262a38;flex:1;min-height:0;max-width:100%;aspect-ratio:360/720;height:auto}
+</style></head><body>
+<div id="tabs"><button class="on">A Cosmic</button><button>B Aurora</button><button>C Neon</button><button>D Sunrise</button></div>
+<div id="track">
+<div class="slide"><div class="cap"><b>A · Cosmic</b> — Manifest's night sky on Home: drifting stars, glowing tiles, self-drawing net-worth line. Effort: <b>small</b></div><canvas data-o="A"></canvas></div>
+<div class="slide"><div class="cap"><b>B · Aurora glass</b> — moving aurora blobs behind frosted cards (BackdropBlur), animated income vs expense bars. Effort: <b>medium</b></div><canvas data-o="B"></canvas></div>
+<div class="slide"><div class="cap"><b>C · Neon minimal</b> — near-black, hairline neon, glowing mini rings per goal, sparkle burst at 100%. Effort: <b>small</b></div><canvas data-o="C"></canvas></div>
+<div class="slide"><div class="cap"><b>D · Warm sunrise</b> — light calm gradient that warms with progress, liquid-fill goal bubbles. Effort: <b>medium–large</b></div><canvas data-o="D"></canvas></div>
+</div>
+<script>
+const W=360,H=720,TAU=Math.PI*2;
+const eur=n=>'€'+Math.round(n).toLocaleString('en-US');
+const NW=[298,305,311,309,322,334,341,338,352,361,370,382.5];
+const GOALS=[['Emergency fund',30000,30000],['House deposit',60000,41400],['Freedom number',1200000,382500]];
+const ease=t=>1-Math.pow(1-Math.min(1,Math.max(0,t)),3);
+function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function txt(c,s,x,y,sz,col,wt=500,al='left'){c.font=wt+' '+sz+'px system-ui,Roboto,sans-serif';c.fillStyle=col;c.textAlign=al;c.fillText(s,x,y)}
+function linePath(c,x,y,w,h,p){const n=NW.length,mn=290,mx=390;const pts=NW.map((v,i)=>[x+w*i/(n-1),y+h-(v-mn)/(mx-mn)*h]);const k=Math.max(1,p*(n-1));c.beginPath();let last;for(let i=0;i<=Math.floor(k)&&i<n;i++){c.lineTo(...pts[i]);last=pts[i]}if(k<n-1){const i=Math.floor(k),f=k-i;last=[pts[i][0]+(pts[i+1][0]-pts[i][0])*f,pts[i][1]+(pts[i+1][1]-pts[i][1])*f];c.lineTo(...last)}return last}
+function chart(c,x,y,w,h,p,col,fillTop,glow){
+ c.save();const end=linePath(c,x,y,w,h,p);c.lineTo(end[0],y+h);c.lineTo(x,y+h);c.closePath();const g=c.createLinearGradient(0,y,0,y+h);g.addColorStop(0,fillTop);g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.fill();
+ linePath(c,x,y,w,h,p);c.strokeStyle=col;c.lineWidth=2.5;c.lineJoin='round';c.shadowColor=col;c.shadowBlur=glow;c.stroke();c.shadowBlur=glow*1.5;c.fillStyle='#fff';c.beginPath();c.arc(end[0],end[1],3.5,0,TAU);c.fill();c.restore()}
+function nav(c,on,fg,dim,bg){c.fillStyle=bg;c.fillRect(0,H-58,W,58);['Home','Net Worth','Income','Goals','More'].forEach((s,i)=>{const x=36+i*72;c.beginPath();c.arc(x,H-38,i==on?4:3,0,TAU);c.fillStyle=i==on?fg:dim;c.fill();txt(c,s,x,H-18,10.5,i==on?fg:dim,600,'center')})}
+const stars=Array.from({length:110},()=>[Math.random()*W,Math.random()*H,Math.random()*1.4+.3,Math.random()*TAU]);
+const blobs=[['#3b6cff',.9],['#9b4dff',1.3],['#18d6b0',.7],['#ff7a3d',1.1]];
+const sparks=[];
+const draw={
+A(c,t){ // Cosmic
+ const g=c.createRadialGradient(W*.5,H*.15,10,W*.5,H*.4,H*.8);g.addColorStop(0,'#1a1f45');g.addColorStop(.5,'#0b0e24');g.addColorStop(1,'#04050c');c.fillStyle=g;c.fillRect(0,0,W,H);
+ for(const s of stars){const y=(s[1]+t*6*s[2])%H;c.globalAlpha=.35+.6*Math.abs(Math.sin(t*.8+s[3]));c.fillStyle='#fff';c.beginPath();c.arc(s[0],y,s[2],0,TAU);c.fill()}c.globalAlpha=1;
+ txt(c,'Good evening, Riccardo',20,44,13,'#8f98c8');txt(c,'Net worth',20,72,13,'#aab4e6',600);
+ const p=ease(t/2.2);txt(c,eur(382500*Math.min(1,p*1.05)),20,108,34,'#fff',700);txt(c,'▲ +€12,500 this month',20,130,12.5,'#5cf2a8',600);
+ rr(c,14,146,W-28,170,20);c.fillStyle='rgba(255,255,255,.05)';c.fill();c.strokeStyle='rgba(140,160,255,.25)';c.lineWidth=1;c.stroke();
+ chart(c,30,168,W-60,126,p,'#ff9a4a','rgba(255,138,61,.35)',14);txt(c,'Nov',30,308,10,'#6f78a8');txt(c,'Oct',W-30,308,10,'#6f78a8',500,'right');
+ const tiles=[['Assets',512300,'#58a6ff'],['Liabilities',129800,'#ff6b8a'],['Net income /mo',3450,'#5cf2a8'],['Savings rate',41.8,'#ffb84a']];
+ tiles.forEach((d,i)=>{const x=14+(i%2)*170,y=330+Math.floor(i/2)*92,pulse=.5+.5*Math.sin(t*1.5+i);c.save();rr(c,x,y,162,80,18);c.fillStyle='rgba(16,20,48,.75)';c.shadowColor=d[2];c.shadowBlur=8+8*pulse;c.fill();c.restore();rr(c,x,y,162,80,18);c.strokeStyle=d[2]+'66';c.stroke();
+  txt(c,d[0],x+14,y+26,12,'#9aa3d0',600);txt(c,i==3?d[1]+'%':eur(d[1]*ease(t/2-i*.1)),x+14,y+58,20,'#fff',700)});
+ rr(c,14,518,W-28,128,20);c.fillStyle='rgba(255,255,255,.05)';c.fill();txt(c,'Manifest · Freedom number',30,544,12.5,'#aab4e6',600);
+ const cx=74,cy=596,R=34,gp=.319*ease(t/2.5);c.lineWidth=7;c.strokeStyle='rgba(255,255,255,.08)';c.beginPath();c.arc(cx,cy,R,0,TAU);c.stroke();
+ c.save();const gr=c.createLinearGradient(cx-R,cy,cx+R,cy);gr.addColorStop(0,'#ff8a3d');gr.addColorStop(1,'#4d8bff');c.strokeStyle=gr;c.lineCap='round';c.shadowColor='#ff8a3d';c.shadowBlur=14;c.beginPath();c.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+TAU*gp);c.stroke();c.restore();
+ txt(c,'32%',cx,cy+5,14,'#fff',700,'center');txt(c,'€382,500 of €1,200,000',124,590,14,'#fff',600);txt(c,'≈ 9.4 years at current pace',124,612,12,'#8f98c8');
+ nav(c,0,'#ff9a4a','#5b6390','rgba(5,6,16,.9)')},
+B(c,t){ // Aurora
+ c.fillStyle='#070912';c.fillRect(0,0,W,H);c.save();c.globalAlpha=.7;
+ blobs.forEach((b,i)=>{const x=W*(.5+.42*Math.sin(t*.13*b[1]+i*1.7)),y=H*(.35+.3*Math.cos(t*.1*b[1]+i*2.3));const g=c.createRadialGradient(x,y,0,x,y,170);g.addColorStop(0,b[0]);g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.fillRect(0,0,W,H)});c.restore();
+ const glass=(x,y,w,h)=>{rr(c,x,y,w,h,22);c.fillStyle='rgba(255,255,255,.08)';c.fill();c.strokeStyle='rgba(255,255,255,.18)';c.lineWidth=1;c.stroke()};
+ txt(c,'Net Income',20,52,24,'#fff',700);txt(c,'October 2026',20,74,13,'rgba(255,255,255,.6)');
+ glass(14,92,W-28,120);txt(c,'Left over this month',32,122,13,'rgba(255,255,255,.7)',600);const p=ease(t/2);txt(c,eur(3450*p),32,166,38,'#fff',700);txt(c,'€8,250 in · €4,800 out',32,192,13,'rgba(255,255,255,.65)');
+ glass(14,226,W-28,236);txt(c,'Income vs expenses · 6 mo',32,254,13,'rgba(255,255,255,.75)',600);
+ const inc=[7.9,8.1,7.6,8.4,8.0,8.25],exp=[5.1,4.6,5.4,4.9,4.7,4.8];['May','Jun','Jul','Aug','Sep','Oct'].forEach((m,i)=>{const x=40+i*50,base=430,k=ease((t-.2-i*.12)/1.2);
+  const g1=c.createLinearGradient(0,base-150,0,base);g1.addColorStop(0,'#6ef0c9');g1.addColorStop(1,'rgba(110,240,201,.2)');rr(c,x,base-inc[i]*17*k,16,inc[i]*17*k,6);c.fillStyle=g1;c.fill();
+  const g2=c.createLinearGradient(0,base-150,0,base);g2.addColorStop(0,'#ff8fb3');g2.addColorStop(1,'rgba(255,143,179,.2)');rr(c,x+19,base-exp[i]*17*k,16,exp[i]*17*k,6);c.fillStyle=g2;c.fill();txt(c,m,x+17,450,10.5,'rgba(255,255,255,.6)',500,'center')});
+ glass(14,476,W-28,170);txt(c,'Top expenses',32,504,13,'rgba(255,255,255,.75)',600);
+ [['Rent / Mortgage',1500],['Daily allowance',800],['Groceries',650],['Travel',500]].forEach((e,i)=>{const y=530+i*29,k=ease((t-.8-i*.1)/1);txt(c,e[0],32,y+4,13,'#fff',500);txt(c,eur(e[1]),W-32,y+4,13,'#fff',600,'right');rr(c,150,y-5,110*e[1]/1500*k,6,3);c.fillStyle='rgba(255,255,255,.55)';c.fill()});
+ nav(c,2,'#fff','rgba(255,255,255,.45)','rgba(10,12,24,.55)')},
+C(c,t){ // Neon
+ c.fillStyle='#050507';c.fillRect(0,0,W,H);c.strokeStyle='rgba(0,255,214,.05)';c.lineWidth=1;for(let y=0;y<H;y+=24){c.beginPath();c.moveTo(0,y);c.lineTo(W,y);c.stroke()}
+ txt(c,'Goals',20,52,26,'#fff',700);txt(c,'3 active · 1 complete',20,74,13,'#5d6470');
+ const cols=['#00ffd5','#ff2fd6','#ffd400'];
+ GOALS.forEach((g,i)=>{const y=96+i*150,col=cols[i],pr=g[2]/g[1],k=ease((t-.3*i)/1.6),cur=pr*k;
+  c.save();rr(c,14,y,W-28,134,16);c.strokeStyle=col;c.globalAlpha=.55;c.shadowColor=col;c.shadowBlur=10;c.lineWidth=1;c.stroke();c.restore();
+  const cx=W-70,cy=y+67,R=36;c.lineWidth=3;c.strokeStyle='rgba(255,255,255,.07)';c.beginPath();c.arc(cx,cy,R,0,TAU);c.stroke();
+  c.save();c.strokeStyle=col;c.lineCap='round';c.shadowColor=col;c.shadowBlur=12+4*Math.sin(t*2+i);c.beginPath();c.arc(cx,cy,R,-Math.PI/2,-Math.PI/2+TAU*cur);c.stroke();c.restore();
+  const a=-Math.PI/2+TAU*cur;c.save();c.fillStyle='#fff';c.shadowColor=col;c.shadowBlur=14;c.beginPath();c.arc(cx+R*Math.cos(a),cy+R*Math.sin(a),3,0,TAU);c.fill();c.restore();
+  txt(c,Math.round(cur*100)+'%',cx,cy+6,16,'#fff',700,'center');txt(c,g[0],32,y+34,15,'#fff',600);txt(c,eur(g[2]*k),32,y+70,24,col,700);txt(c,'of '+eur(g[1]),32,y+94,12.5,'#6b7280');
+  if(pr>=1){txt(c,k>=1?'✓ COMPLETE':'',32,y+118,11,col,700);if(k>=1&&!sparks.done){sparks.done=1;for(let s=0;s<60;s++){const an=Math.random()*TAU,sp=40+Math.random()*90;sparks.push([cx,cy,Math.cos(an)*sp,Math.sin(an)*sp,t,col])}}}else txt(c,i==1?'€1,550/mo · Jun 2027':'€3,450/mo · 2036',32,y+118,11,'#5d6470',600)});
+ for(const s of sparks){const d=t-s[4];if(d>2.5)continue;const x=s[0]+s[2]*d,y=s[1]+s[3]*d+20*d*d;c.globalAlpha=Math.max(0,1-d/2.5);c.fillStyle=s[5];c.save();c.shadowColor=s[5];c.shadowBlur=8;c.beginPath();c.arc(x,y,1.8,0,TAU);c.fill();c.restore()}c.globalAlpha=1;
+ if(sparks.length&&t-sparks[0][4]>4.5){sparks.length=0;sparks.done=0;t0.C=performance.now()}
+ c.save();rr(c,14,552,W-28,90,16);c.strokeStyle='rgba(255,255,255,.12)';c.stroke();c.restore();txt(c,'Net worth',32,580,12.5,'#6b7280',600);txt(c,'€382,500',32,612,22,'#fff',700);
+ c.save();c.beginPath();c.rect(170,560,170,74);c.clip();chart(c,170,566,160,62,ease(t/2),'#00ffd5','rgba(0,255,213,.18)',10);c.restore();
+ nav(c,3,'#00ffd5','#3c424c','#050507')},
+D(c,t){ // Sunrise
+ const prog=.32+.1*Math.sin(t*.25);const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,`hsl(${28+prog*20},100%,${88-prog*6}%)`);g.addColorStop(.55,`hsl(${15+prog*15},90%,93%)`);g.addColorStop(1,'#fff8f1');c.fillStyle=g;c.fillRect(0,0,W,H);
+ c.save();const sy=210-prog*60;const sg=c.createRadialGradient(W*.75,sy,0,W*.75,sy,160);sg.addColorStop(0,'rgba(255,180,90,.55)');sg.addColorStop(1,'rgba(255,180,90,0)');c.fillStyle=sg;c.fillRect(0,0,W,H);c.restore();
+ txt(c,'Good evening, Riccardo',20,48,13,'#a2663b',600);txt(c,'Net worth',20,76,13,'#8a5a3a',600);txt(c,eur(382500*ease(t/2)),20,112,34,'#3b2418',800);txt(c,'▲ 4.3% this quarter',20,134,12.5,'#2f9e6b',700);
+ c.save();rr(c,14,150,W-28,150,22);c.fillStyle='rgba(255,255,255,.7)';c.shadowColor='rgba(180,90,30,.18)';c.shadowBlur=24;c.shadowOffsetY=8;c.fill();c.restore();chart(c,30,168,W-60,112,ease(t/2.2),'#f07a2e','rgba(255,140,60,.28)',0);
+ txt(c,'Goals',20,334,17,'#3b2418',700);
+ const bub=[[70,430,52,'Emergency','#4fc39a'],[180,430,52,'House','#f59a3c'],[290,430,52,'Freedom','#e7678a']];
+ bub.forEach((b,i)=>{const [x,y,R,n,col]=b,pr=GOALS[i][2]/GOALS[i][1],lv=pr*ease((t-.2*i)/2.2);c.save();c.beginPath();c.arc(x,y,R,0,TAU);c.fillStyle='rgba(255,255,255,.75)';c.shadowColor='rgba(180,90,30,.2)';c.shadowBlur=18;c.shadowOffsetY=6;c.fill();c.restore();
+  c.save();c.beginPath();c.arc(x,y,R-4,0,TAU);c.clip();const top=y+R-2*R*lv;for(let L=0;L<2;L++){c.beginPath();c.moveTo(x-R,y+R);for(let xx=-R;xx<=R;xx+=4)c.lineTo(x+xx,top+Math.sin(xx/12+t*(2+L)+i)*(lv>=1?0:3+L*2));c.lineTo(x+R,y+R);c.closePath();c.fillStyle=col+(L?'cc':'66');c.fill()}c.restore();
+  txt(c,Math.round(pr*100*Math.min(1,lv/pr||0))+'%',x,y+6,17,'#3b2418',800,'center');txt(c,n,x,y+R+22,12.5,'#8a5a3a',700,'center');txt(c,eur(GOALS[i][2]),x,y+R+38,11,'#a2663b',500,'center')});
+ [['Assets','€512,300','#2f9e6b'],['Liabilities','€129,800','#d1495b']].forEach((d,i)=>{const x=14+i*170;c.save();rr(c,x,540,162,96,20);c.fillStyle='rgba(255,255,255,.75)';c.shadowColor='rgba(180,90,30,.15)';c.shadowBlur=18;c.fill();c.restore();txt(c,d[0],x+16,568,12.5,'#8a5a3a',600);txt(c,d[1],x+16,602,21,'#3b2418',800);rr(c,x+16,616,130,5,3);c.fillStyle=d[2]+'33';c.fill();rr(c,x+16,616,130*(i?.25:1)*ease(t/2),5,3);c.fillStyle=d[2];c.fill()});
+ nav(c,0,'#e8742a','#c9a58a','rgba(255,250,244,.92)')}};
+const cvs=[...document.querySelectorAll('canvas')],t0={},vis=new Set();const dpr=Math.min(2,devicePixelRatio||1);
+cvs.forEach(cv=>{cv.width=W*dpr;cv.height=H*dpr;cv.style.width='min(100%, calc((100vh - 96px) * .5))'});
+const io=new IntersectionObserver(es=>es.forEach(e=>{const o=e.target.dataset.o;if(e.isIntersecting&&e.intersectionRatio>.5){if(!vis.has(o)){vis.add(o);t0[o]=performance.now();sparks.length=0;sparks.done=0}}else vis.delete(o)}),{threshold:[0,.5,.6]});
+cvs.forEach(c=>io.observe(c));
+let raf;function loop(now){cvs.forEach(cv=>{const o=cv.dataset.o;if(!vis.has(o))return;const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);draw[o](c,(now-t0[o])/1000)});raf=requestAnimationFrame(loop)}
+document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(raf);if(!document.hidden)raf=requestAnimationFrame(loop)});raf=requestAnimationFrame(loop);
+const track=document.getElementById('track'),btns=[...document.querySelectorAll('#tabs button')];
+btns.forEach((b,i)=>b.onclick=()=>track.scrollTo({left:i*track.clientWidth,behavior:'smooth'}));
+track.addEventListener('scroll',()=>{const i=Math.round(track.scrollLeft/track.clientWidth);btns.forEach((b,j)=>b.classList.toggle('on',i==j))},{passive:true});
+if(location.hash)setTimeout(()=>{const i='ABCD'.indexOf(location.hash[1]);if(i>0)track.scrollLeft=i*track.clientWidth},50);
+</script></body></html>
