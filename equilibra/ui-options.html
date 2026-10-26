@@ -3,22 +3,26 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;background:#101114;color:#eee;font-family:system-ui,-apple-system,Roboto,sans-serif;overflow:hidden}
 header{padding:10px 14px 6px;text-align:center}h1{font-size:15px;font-weight:700}.note{font-size:11px;color:#9a9aa2;margin-top:2px}
-.tabs{display:flex;gap:6px;justify-content:center;padding:6px}.tabs button{flex:0 0 52px;height:34px;border-radius:17px;border:1px solid #333;background:#1b1c20;color:#ccc;font-weight:700;font-size:14px}
+.tabs{display:flex;gap:6px;justify-content:center;padding:6px}.tabs{gap:4px}.tabs button{flex:0 0 40px;height:34px;border-radius:17px;border:1px solid #333;background:#1b1c20;color:#ccc;font-weight:700;font-size:14px}
 .tabs button.on{background:#E7C95C;color:#1d1d1f;border-color:#E7C95C}
 .track{display:flex;height:calc(100% - 178px);transition:transform .35s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
 .slide{flex:0 0 100vw;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:4px}
 canvas{height:min(100%,calc(92vw*760/360));width:auto;aspect-ratio:360/760;border-radius:30px;box-shadow:0 0 0 6px #2a2b30,0 20px 50px #000a}
 .cap{padding:8px 16px 10px;text-align:center;font-size:12.5px;line-height:1.4;color:#d6d6dc;min-height:58px}.cap b{color:#E7C95C}
 </style></head><body>
-<header><h1>Equilibra — 4 animated design directions</h1><div class="note">Home screen mockups · all scores are EXAMPLE DATA · react-native-skia achievable · swipe or tap A–D</div></header>
-<div class="tabs"><button class="on">A</button><button>B</button><button>C</button><button>D</button></div>
-<div class="track" id="tr"><div class="slide"><canvas data-o="0"></canvas></div><div class="slide"><canvas data-o="1"></canvas></div><div class="slide"><canvas data-o="2"></canvas></div><div class="slide"><canvas data-o="3"></canvas></div></div>
+<header><h1>Equilibra — 8 animated design directions</h1><div class="note">Home screen mockups · all scores are EXAMPLE DATA · react-native-skia achievable · swipe or tap A–H</div></header>
+<div class="tabs"><button class="on">A</button><button>B</button><button>C</button><button>D</button><button>E</button><button>F</button><button>G</button><button>H</button></div>
+<div class="track" id="tr"><div class="slide"><canvas data-o="0"></canvas></div><div class="slide"><canvas data-o="1"></canvas></div><div class="slide"><canvas data-o="2"></canvas></div><div class="slide"><canvas data-o="3"></canvas></div><div class="slide"><canvas data-o="4"></canvas></div><div class="slide"><canvas data-o="5"></canvas></div><div class="slide"><canvas data-o="6"></canvas></div><div class="slide"><canvas data-o="7"></canvas></div></div>
 <div class="cap" id="cap"></div>
 <script>
 const CAPS=["<b>A · Calm Aurora</b> — slow breathing aurora gradient, soft glow halos behind each score-colored tile, a breathing ring on Overall. Effort: <b>small</b>.",
 "<b>B · Liquid Balance</b> — every life area becomes a glass vessel filled to its score with a gently waving liquid; Overall is a sloshing orb. Effort: <b>medium</b>.",
 "<b>C · Wheel of Life</b> — the 9 areas bloom as petals of an animated balance wheel around the Overall score, with compact area chips below. Effort: <b>medium–large</b>.",
-"<b>D · Night Garden</b> — dark mode where each area is a glowing star sized/lit by its score, connected by a drawing constellation with drifting firefly particles. Effort: <b>large</b>."];
+"<b>D · Night Garden</b> — dark mode where each area is a glowing star sized/lit by its score, connected by a drawing constellation with drifting firefly particles. Effort: <b>large</b>.",
+"<b>E · Zen Stones</b> — each area is a small cairn of pebbles that settles still when its score is high and wobbles when low, over slowly raked sand ripples. Effort: <b>medium</b>.",
+"<b>F · Bloom</b> — each area is a plant whose stem height and petal opening grow with its score, swaying gently; Overall is a sunrise. Effort: <b>medium</b>.",
+"<b>G · Prism Glass</b> — bright minimal glassmorphism: frosted tiles with a refracting rainbow edge and soft caustic light drifting underneath. Effort: <b>small–medium</b>.",
+"<b>H · Pulse</b> — each area is a living ring that breathes at a rate tied to its score (balanced areas breathe in sync), with a heartbeat line on Overall. Effort: <b>medium</b>."];
 // EXAMPLE DATA — 9 default Equilibra areas, scores 1–5
 const A=[["Family",4.2],["Friends",3.6],["Relationship",4.6],["Health",2.8],["Career",3.4],["Finance",2.2],["Service",3.0],["Spirituality",3.8],["Leisure",4.4]];
 const SC=['#FF8A8A','#FFB36B','#E7C95C','#9CCB82','#5BC49A'];
@@ -30,7 +34,7 @@ function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function tx(c,s,x,y,sz,w,cl,al='left'){c.font=`${w} ${sz}px system-ui,Roboto,sans-serif`;c.fillStyle=cl;c.textAlign=al;c.fillText(s,x,y)}
 function status(c,cl){tx(c,'9:41',22,22,12,600,cl);tx(c,'●●● ▮',338,22,10,600,cl,'right')}
 function exTag(c,y,cl){tx(c,'EXAMPLE DATA',W/2,y,9,800,cl,'center')}
-function header(c,cl,sub){tx(c,'Equilibra',20,62,26,800,cl);tx(c,'See what matters. Shape what comes next.',20,82,12.5,400,sub);c.beginPath();c.arc(326,56,19,0,7);c.fillStyle=cl==='#1D1D1F'?'#fff':'#ffffff18';c.fill();tx(c,'⚙',326,62,17,400,cl,'center')}
+function header(c,cl,sub){tx(c,'Equilibra',20,62,26,800,cl);tx(c,'See what matters. Shape what comes next.',20,82,12.5,400,sub);c.beginPath();c.arc(326,56,19,0,7);c.fillStyle=cl!=='#F5F5F7'?'#fff':'#ffffff18';c.fill();tx(c,'⚙',326,62,17,400,cl,'center')}
 function actions(c,y,dark,t){const bg=dark?'#ffffff12':'#ffffffcc',fg=dark?'#F5F5F7':'#1D1D1F',sub=dark?'#9a9aa2':'#8E8E93';
  [["Customize tiles","Names & colors",16],["Goals","3 active · 1 favorite",188]].forEach(([a,b,x])=>{rr(c,x,y,156,56,18);c.fillStyle=bg;c.fill();tx(c,a,x+14,y+25,13,700,fg);tx(c,b,x+14,y+42,10.5,400,sub)});
  rr(c,16,y+66,328,46,16);c.fillStyle=dark?'#ffffff0d':'#EAEAEEcc';c.fill();tx(c,'History',32,y+94,13,700,fg);tx(c,'4 saved snapshots ›',328,y+94,11,500,sub,'right');
@@ -93,10 +97,57 @@ function dD(c,t){const T=t/1000;const g=c.createLinearGradient(0,0,0,H);g.addCol
  tx(c,'OVERALL',34,476,11,800,'#9a9aa2');tx(c,(OV*ease(T/2)).toFixed(1),34,518,36,800,col(OV));tx(c,'average of 9 areas',112,516,11,400,'#9a9aa2');
  const b=(Math.sin(T*1.1)+1)/2,gg=c.createRadialGradient(296,494,0,296,494,40);gg.addColorStop(0,col(OV,.9));gg.addColorStop(1,col(OV,0));c.fillStyle=gg;c.beginPath();c.arc(296,494,26+b*10,0,7);c.fill();
  actions(c,552,true,t)}
-const D=[dA,dB,dC,dD];
+
+function grid9(c,fn){A.forEach(([n,v],i)=>{const[x,y]=tileXY(i);fn(x,y,n,v,i)})}
+function ovCard(c,bg,fg,sub,T){rr(c,16,100,328,112,26);c.fillStyle=bg;c.fill();tx(c,'OVERALL',34,130,11,800,sub);tx(c,(OV*ease(T/2)).toFixed(1),34,174,40,800,fg);tx(c,'average of answered areas',34,196,11,400,sub)}
+// ---------- E Zen Stones
+function dE(c,t){const T=t/1000;c.fillStyle='#EEE7DA';c.fillRect(0,0,W,H);c.lineWidth=1;
+ for(let k=0;k<22;k++){c.beginPath();for(let x=0;x<=W;x+=6)c.lineTo(x,k*36+Math.sin(x/40+T*.4+k*.6)*4);c.strokeStyle='#d8cdb855';c.stroke()}
+ status(c,'#3A342C');header(c,'#3A342C','#7d7365');ovCard(c,'#F7F2EAee','#3A342C','#8a7f70',T);
+ for(let k=1;k<5;k++){c.beginPath();c.ellipse(286,170,10+k*11,4+k*4,0,0,7);c.strokeStyle=`rgba(140,125,100,${.35-k*.06})`;c.stroke()}
+ [[30,14,'#9b9184'],[22,11,'#b3a996'],[14,9,col(OV)]].reduce((y,[w,h,k])=>{c.beginPath();c.ellipse(286,y-h,w,h,0,0,7);c.fillStyle=k;c.fill();return y-h*2+2},178);
+ grid9(c,(x,y,n,v,i)=>{rr(c,x,y,104,104,24);c.fillStyle='#F7F2EAcc';c.fill();const p=ease(T*1.2-i*.1),wob=(5-v)*.05*Math.sin(T*1.6+i);
+  c.save();c.translate(x+76,y+88);c.rotate(wob);let yy=0;[[22,8,'#a59b8b'],[16,7,'#c2b8a5'],[10,6,col(v)]].forEach(([w,h,k],j)=>{const d=(1-p)*(j+1)*30;c.beginPath();c.ellipse(j?Math.sin(T+i+j)*(5-v)*.6:0,yy-h-d,w,h,0,0,7);c.fillStyle=k;c.fill();yy-=h*2-1});c.restore();
+  tx(c,n,x+12,y+24,12,700,'#3A342C');tx(c,v.toFixed(1),x+12,y+46,18,800,'#3A342C')});
+ actions(c,566,false,t)}
+// ---------- F Bloom
+function flower(c,x,y,v,T,i,p){const h=(18+v*9)*p,sw=Math.sin(T*1.1+i)*4,tx2=x+sw,ty=y-h;c.strokeStyle='#6E9F5E';c.lineWidth=2.5;c.beginPath();c.moveTo(x,y);c.quadraticCurveTo(x,y-h/2,tx2,ty);c.stroke();
+ c.beginPath();c.ellipse(x+5,y-h*.4,6,3,-.5,0,7);c.fillStyle='#8CBF72';c.fill();const o=(v/5)*p,np=6;
+ for(let k=0;k<np;k++){const a=k/np*6.28+T*.2;c.beginPath();c.ellipse(tx2+Math.cos(a)*7*o,ty+Math.sin(a)*7*o,4+6*o,3+2*o,a,0,7);c.fillStyle=col(v,.9);c.fill()}
+ c.beginPath();c.arc(tx2,ty,3+2*o,0,7);c.fillStyle='#FFF4C8';c.fill()}
+function dF(c,t){const T=t/1000;const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#FFF7EE');g.addColorStop(1,'#EEF6EA');c.fillStyle=g;c.fillRect(0,0,W,H);
+ status(c,'#2E3A2A');header(c,'#2E3A2A','#6f7a68');rr(c,16,100,328,112,26);const sg=c.createLinearGradient(0,100,0,212);sg.addColorStop(0,'#FFE7C2');sg.addColorStop(1,'#FFF6E6');c.fillStyle=sg;c.fill();
+ c.save();rr(c,16,100,328,112,26);c.clip();const r=ease(T/2);c.beginPath();c.arc(286,212-60*r*OV/5,30,0,7);c.fillStyle=col(OV);c.shadowColor=col(OV);c.shadowBlur=30;c.fill();c.shadowBlur=0;
+ for(let k=0;k<8;k++){const a=k/8*6.28+T*.15;c.beginPath();c.moveTo(286+Math.cos(a)*38,212-60*r*OV/5+Math.sin(a)*38);c.lineTo(286+Math.cos(a)*48,212-60*r*OV/5+Math.sin(a)*48);c.strokeStyle=col(OV,.6);c.lineWidth=2;c.stroke()}c.restore();
+ tx(c,'OVERALL',34,130,11,800,'#8a7a5c');tx(c,(OV*r).toFixed(1),34,174,40,800,'#2E3A2A');tx(c,'average of answered areas',34,196,11,400,'#8a7a5c');
+ grid9(c,(x,y,n,v,i)=>{rr(c,x,y,104,104,24);c.fillStyle='#ffffffb8';c.fill();c.beginPath();c.ellipse(x+74,y+94,18,4,0,0,7);c.fillStyle='#d9c9a8';c.fill();
+  flower(c,x+74,y+93,v,T,i,ease(T*1.1-i*.1));tx(c,n,x+12,y+24,12,700,'#2E3A2A');tx(c,v.toFixed(1),x+12,y+46,18,800,'#2E3A2A')});
+ actions(c,566,false,t)}
+// ---------- G Prism Glass
+function dG(c,t){const T=t/1000;c.fillStyle='#F7F8FB';c.fillRect(0,0,W,H);
+ ['#FFB3C7','#A9C8FF','#B8F0D8','#FFE3A3'].forEach((k,i)=>{const X=180+Math.sin(T*.35+i*1.7)*150,Y=380+Math.cos(T*.28+i*2.1)*300,g=c.createRadialGradient(X,Y,0,X,Y,170);g.addColorStop(0,k+'aa');g.addColorStop(1,k+'00');c.fillStyle=g;c.fillRect(0,0,W,H)});
+ status(c,'#1D1D1F');header(c,'#1D1D1F','#6E6E73');
+ const glass=(x,y,w,h,r,a)=>{rr(c,x,y,w,h,r);c.fillStyle='#ffffff8c';c.fill();const cg=c.createConicGradient(T*.6+a,x+w/2,y+h/2);['#ff9ab8','#ffd36e','#8ff0c0','#8fb8ff','#c9a0ff','#ff9ab8'].forEach((k,j)=>cg.addColorStop(j/5,k));c.lineWidth=1.6;c.strokeStyle=cg;c.stroke();
+  c.save();rr(c,x,y,w,h,r);c.clip();const sx=x-w+((T*60+a*80)%(w*3)),sg=c.createLinearGradient(sx,y,sx+w*.6,y+h);sg.addColorStop(0,'#ffffff00');sg.addColorStop(.5,'#ffffffaa');sg.addColorStop(1,'#ffffff00');c.fillStyle=sg;c.fillRect(x,y,w,h);c.restore()};
+ glass(16,100,328,112,26,0);tx(c,'OVERALL',34,130,11,800,'#8E8E93');tx(c,(OV*ease(T/2)).toFixed(1),34,174,40,800,'#1D1D1F');tx(c,'average of answered areas',34,196,11,400,'#8E8E93');
+ c.lineWidth=6;c.lineCap='round';c.strokeStyle='#00000010';c.beginPath();c.arc(290,156,30,0,7);c.stroke();c.strokeStyle=col(OV);c.beginPath();c.arc(290,156,30,-1.57,-1.57+6.28*OV/5*ease(T/2));c.stroke();
+ grid9(c,(x,y,n,v,i)=>{glass(x,y,104,104,24,i);c.beginPath();c.arc(x+24,y+26,9,0,7);c.fillStyle=col(v);c.shadowColor=col(v);c.shadowBlur=12;c.fill();c.shadowBlur=0;
+  tx(c,n,x+12,y+72,12.5,700,'#1D1D1F');tx(c,v.toFixed(1),x+12,y+93,17,800,'#1D1D1F')});
+ actions(c,566,false,t)}
+// ---------- H Pulse
+function dH(c,t){const T=t/1000;c.fillStyle='#FBF6F4';c.fillRect(0,0,W,H);status(c,'#2A1F22');header(c,'#2A1F22','#7a6c6f');
+ rr(c,16,100,328,112,26);c.fillStyle='#fff';c.fill();tx(c,'OVERALL',34,130,11,800,'#8E8E93');tx(c,(OV*ease(T/2)).toFixed(1),34,174,40,800,'#2A1F22');tx(c,'in rhythm: 5 of 9 areas',34,196,11,400,'#8E8E93');
+ c.save();rr(c,150,120,180,70,10);c.clip();c.beginPath();for(let x=0;x<=180;x+=2){const ph=((x/180)*2-T*1.2)%1,q=(ph+1)%1;let y=0;if(q>.4&&q<.44)y=-24;else if(q>.44&&q<.48)y=14;else if(q>.36&&q<.4)y=4;c.lineTo(150+x,158+y)}
+ c.strokeStyle=col(OV);c.lineWidth=2.5;c.lineJoin='round';c.shadowColor=col(OV);c.shadowBlur=8;c.stroke();c.shadowBlur=0;c.restore();
+ grid9(c,(x,y,n,v,i)=>{rr(c,x,y,104,104,24);c.fillStyle='#fff';c.fill();const rate=v>=3.5?1:.6+v*.12+i*.05,b=(Math.sin(T*2.4*rate)+1)/2,p=ease(T*1.2-i*.1),R=(14+b*5)*p;
+  c.beginPath();c.arc(x+74,y+34,R+8,0,7);c.fillStyle=col(v,.15+b*.15);c.fill();c.beginPath();c.arc(x+74,y+34,R,0,7);c.lineWidth=4;c.strokeStyle=col(v);c.stroke();
+  c.beginPath();c.arc(x+74,y+34,R,-1.57,-1.57+6.28*v/5);c.lineWidth=4;c.strokeStyle=col(v);c.stroke();
+  tx(c,n,x+12,y+78,12,700,'#2A1F22');tx(c,v.toFixed(1),x+12,y+96,15,800,'#2A1F22');if(v>=3.5){c.beginPath();c.arc(x+92,y+92,3,0,7);c.fillStyle='#5BC49A';c.fill()}});
+ actions(c,566,false,t)}
+const D=[dA,dB,dC,dD,dE,dF,dG,dH];
 const cv=[...document.querySelectorAll('canvas')],cx=cv.map(c=>{c.width=W*dpr;c.height=H*dpr;const x=c.getContext('2d');x.scale(dpr,dpr);return x});
 let cur=0,t0=performance.now(),raf;const tr=document.getElementById('tr'),bt=[...document.querySelectorAll('.tabs button')];
-function go(i){cur=Math.max(0,Math.min(3,i));tr.style.transform=`translateX(${-cur*100}vw)`;bt.forEach((b,k)=>b.classList.toggle('on',k===cur));document.getElementById('cap').innerHTML=CAPS[cur];t0=performance.now()-(location.hash.includes('s')?8000:0)}
+function go(i){cur=Math.max(0,Math.min(7,i));tr.style.transform=`translateX(${-cur*100}vw)`;bt.forEach((b,k)=>b.classList.toggle('on',k===cur));document.getElementById('cap').innerHTML=CAPS[cur];t0=performance.now()-(location.hash.includes('s')?8000:0)}
 bt.forEach((b,i)=>b.onclick=()=>go(i));let sx=null;tr.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});tr.addEventListener('touchend',e=>{if(sx==null)return;const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)go(cur+(d<0?1:-1));sx=null});
 function loop(n){if(!document.hidden){const c=cx[cur];c.clearRect(0,0,W,H);D[cur](c,n-t0)}raf=requestAnimationFrame(loop)}
 document.addEventListener('visibilitychange',()=>{cancelAnimationFrame(raf);if(!document.hidden)raf=requestAnimationFrame(loop)});
