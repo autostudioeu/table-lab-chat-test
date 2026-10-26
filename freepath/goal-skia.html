@@ -132,7 +132,7 @@ Promise.all([
     P.setColor(C(1,1,1,.15));canvas.drawRect(CK.XYWHRect(W*0.06,H*0.95-ch,W*0.88,1),P);canvas.restore();
     P.setStyle(CK.PaintStyle.Stroke);P.setStrokeWidth(1);P.setColor(C(1,1,1,.16));canvas.drawRRect(card,P);P.setStyle(CK.PaintStyle.Fill);
     const qy=H*0.95-ch/2,qx=W*0.06+20,qf=font(BLACK,44);
-    const qg=CK.Shader.MakeLinearGradient([0,qy-10],[0,qy+14],[C(1,.75,.44),C(1,.48,.16)],null,CK.TileMode.Clamp);P.setColor(C(1,1,1,1));P.setShader(qg);
+    const qg=CK.Shader.MakeLinearGradient([0,qy-10],[0,qy+14],[C(1,.75,.44),C(1,.48,.16)],null,CK.TileMode.Clamp);P.setShader(null);P.setMaskFilter(null);P.setColor(C(1,.6,.25,1));P.setShader(qg);
     canvas.drawText('“',qx,qy+30,P,qf);P.setShader(null);qg.delete();
     const qs=clamp(14,4.2*vw,17);text('You are closer than you think.',qx+tw(qf,'“')+14,qy+qs*0.36,SEMI,qs,C(.93,.94,.98),'left');
     // badge
