@@ -1,0 +1,123 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Freepath · Home in Cosmic Light (preview)</title>
+<style>*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#eef0fb;color:#14213d;font-family:-apple-system,system-ui,Segoe UI,Roboto,sans-serif}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+.phone{position:relative;z-index:1;max-width:430px;margin:0 auto;padding:14px 14px 96px}
+.badge{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#d9661c;border:1px solid rgba(255,140,60,.45);background:rgba(255,255,255,.5);border-radius:99px;padding:3px 9px;margin:4px 4px 10px}
+h1{font-size:22px;font-weight:900;line-height:1.2;padding:0 4px;color:#0f1b38}
+.sub{color:#5d6b8a;font-size:12px;margin:4px 4px 12px}
+.seg{display:flex;background:rgba(255,255,255,.55);border:1px solid rgba(110,140,220,.22);border-radius:14px;padding:4px;margin-bottom:12px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.seg div{flex:1;text-align:center;padding:8px;border-radius:10px;font-weight:800;font-size:13.5px;color:#6a7795}
+.seg .on{background:#fff;color:#14213d;box-shadow:0 2px 10px rgba(255,140,60,.18),0 1px 2px rgba(20,33,61,.08);border:1px solid rgba(255,140,60,.3)}
+.tile{position:relative;background:linear-gradient(160deg,rgba(255,255,255,.82),rgba(248,249,255,.66));border:1px solid rgba(110,140,220,.2);border-radius:20px;padding:14px 15px;margin-bottom:12px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(60,80,150,.08),0 1px 2px rgba(20,33,61,.05),inset 0 1px 0 #fff;animation:pulse 6s ease-in-out infinite}
+.tile:nth-child(odd){animation-delay:-3s}
+@keyframes pulse{0%,100%{box-shadow:0 8px 24px rgba(60,80,150,.08),0 1px 2px rgba(20,33,61,.05),inset 0 1px 0 #fff}50%{box-shadow:0 10px 30px rgba(255,140,60,.12),0 1px 2px rgba(20,33,61,.05),inset 0 1px 0 #fff}}
+.paused .tile{animation-play-state:paused}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.grid .tile{margin:0}
+.t{color:#5d6b8a;font-size:14.5px;font-weight:800;margin-bottom:7px}
+.hero{font-size:34px;font-weight:900;color:#0f1b38}
+.big{font-size:22.5px;font-weight:900}.grid .big{font-size:19px}
+.good{color:#16a36a}.bad{color:#f0556f}
+.acc{color:#f07a22;font-weight:900}
+.small{color:#6a7795;font-size:13px;margin-top:3px}.micro{color:#6a7795;font-size:11.5px;margin-top:4px}
+canvas.ch{display:block;width:100%;height:84px;margin:8px 0 2px}canvas.ch.tall{height:120px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mini{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid rgba(110,140,220,.14)}
+.mini:first-child{border-top:0}
+.ic{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:rgba(110,140,240,.1);font-size:15px;flex-shrink:0}
+.nm{flex:1;font-weight:700;font-size:13.5px}.nm small{display:block;color:#6a7795;font-weight:400;font-size:11px}
+.v{font-weight:800;font-size:13.5px}
+.bar{height:7px;border-radius:9px;background:rgba(110,140,220,.14);overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#ff7a2f,#ffb45c);box-shadow:0 2px 8px rgba(255,140,60,.35)}
+canvas.ring{width:72px;height:72px;flex-shrink:0}
+.goal{display:flex;align-items:center;gap:12px;padding:6px 0}
+.manage{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 15px}
+.sec{font-weight:900;font-size:15px}
+h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#e0711f;margin:22px 4px 10px}
+.opt{opacity:.92;border-style:dashed}
+.addtag{font-size:11px;color:#e0711f;border:1px solid rgba(255,140,60,.45);border-radius:99px;padding:2px 8px}
+nav{position:fixed;z-index:2;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:rgba(255,255,255,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(110,140,220,.2);padding:8px 4px 12px}
+nav div{flex:1;text-align:center;color:#7d8aa6;font-size:11px;font-weight:700}
+nav b{display:block;font-size:19px;margin-bottom:2px;font-weight:400}
+nav .on{color:#f07a22}
+</style></head><body>
+<canvas id="sky"></canvas>
+<div class="phone" id="app">
+<span class="badge">Preview · Cosmic Light · example data</span>
+<h1>Build a life where money buys back your time.</h1>
+<div class="sub">Plan your path to financial freedom.</div>
+<div class="seg"><div class="on">Overview</div><div>Scenarios</div></div>
+<div id="tiles"></div>
+<div class="tile manage"><div><div class="sec">Customize Home</div><div class="micro">Choose which tiles are visible and change their position.</div></div><div class="acc">Manage</div></div>
+<h2>More tiles you can add</h2>
+<div id="opt"></div>
+</div>
+<nav><div class="on"><b>⌂</b>Home</div><div><b>◔</b>Net Worth</div><div><b>↕</b>Net Income</div><div><b>◎</b>Goals</div><div><b>☰</b>More</div></nav>
+<script>
+const eur=v=>'€'+Math.round(v).toLocaleString('en-US');
+const D={assets:[['💶','Cash & Savings',120000],['📈','Investments',265000],['🏠','Property',110000],['💼','Business',0],['💎','Other Assets',17300]],
+liab:[['🏠','Mortgage',50000,'5.89% • 7 years'],['🚗','Personal Loan',32000,'6.20% • 3 years'],['💳','Credit Cards',5800],['📄','Other Liabilities',42000]],
+inc:[['💼','Salary',6900],['💻','Freelance',1200],['🪙','Dividends',150]],
+exp:[['🏠','Rent / Mortgage',1500],['🛒','Groceries',650],['💡','Utilities',300],['🚆','Transport',250],['🛡️','Insurance',180]],
+goals:[['Financial Freedom',1000000,382500,true],['Emergency Fund',50000,36000,true]]};
+const A=512300,L=129800,N=A-L,M=8250-4800,T=55;
+const nwH=[.80,.81,.82,.825,.84,.85,.87,.88,.91,.94,.97,1].map(r=>N*r),niH=[.74,.77,.80,.82,.84,.86,.89,.91,.92,.95,.98,1].map(r=>M*r),tH=[.88,.92,.90,.94,.95,.91,.96,.93,.98,1,.97,1].map(r=>T*r);
+const mini=(x,cls)=>`<div class="mini"><div class="ic">${x[0]}</div><div class="nm">${x[1]}${x[3]?`<small>${x[3]}</small>`:''}</div><div class="v ${cls}">${eur(x[2])}</div></div>`;
+const ff=D.goals[0],ffp=ff[2]/ff[1]*100;
+const tiles={
+netWorth:['Net Worth',`<div class="hero">${eur(N)}</div><div class="good" style="font-weight:800">↑ 25.0% <span style="color:#6a7795;font-weight:400">last 12 months</span></div><canvas class="ch" data-k="line" data-s="nw"></canvas><div class="micro">Work time · 2.0 h/week</div>`],
+assets:['Total Assets',`<div class="big good">${eur(A)}</div><div class="small">Owned economic value.</div>`],
+liabilities:['Total Liabilities',`<div class="big bad">${eur(L)}</div><div class="small">Amounts owed.</div>`],
+netIncome:['Monthly Net Income',`<div class="big good">${eur(M)}</div><canvas class="ch tall" data-k="bar" data-s="ni"></canvas><div class="micro">Work time · 53.0 h/week</div>`],
+financialFreedom:['Financial Freedom',`<div class="goal"><canvas class="ring" data-p="${ffp}"></canvas><div style="flex:1"><div class="row"><div class="sec">${ff[0]}</div><div class="acc">${Math.round(ffp)}%</div></div><div class="bar"><i style="width:${ffp}%"></i></div><div class="small">${eur(ff[2])} / ${eur(ff[1])}</div></div></div>`],
+income:['Income',`<div class="big good">${eur(8250)}</div><div class="small">per month</div>`],
+expenses:['Expenses',`<div class="big bad">${eur(4800)}</div><div class="small">per month</div>`],
+incomeSources:['Income Sources',D.inc.map(x=>mini(x,'good')).join('')],
+expenseBreakdown:['Expense Breakdown',D.exp.map(x=>mini(x,'')).join('')],
+totalTime:['Total Time Worked',`<div class="big">${T.toFixed(1)} h/week</div><div class="small">Weekly time tracked across financial entries.</div><canvas class="ch" data-k="line" data-s="t" data-c="blue"></canvas>`],
+favouriteGoals:['Favourite Goals',D.goals.filter(g=>g[3]).map(g=>{const p=g[2]/g[1]*100;return `<div class="goal"><canvas class="ring" data-p="${p}" style="width:46px;height:46px"></canvas><div style="flex:1"><div class="row"><div class="nm">${g[0]}</div><div class="acc">${Math.round(p)}%</div></div><div class="bar"><i style="width:${p}%"></i></div></div></div>`}).join('')],
+assetsList:['Asset List',D.assets.map(x=>mini(x,'good')).join('')],
+liabilitiesList:['Liability List',D.liab.map(x=>mini(x,'')).join('')]};
+const def=['financialFreedom','netWorth','netIncome','GRID','incomeSources','expenseBreakdown','totalTime','favouriteGoals'],opt=['assetsList','liabilitiesList'];
+const card=(id,o)=>`<div class="tile${o?' opt':''}"><div class="row t"><span>${tiles[id][0]}</span>${o?'<span class="addtag">+ Add</span>':''}</div>${tiles[id][1]}</div>`;
+document.getElementById('tiles').innerHTML=def.map(i=>i==='GRID'?'<div class="grid">'+['assets','liabilities','income','expenses'].map(j=>card(j)).join('')+'</div>':card(i)).join('');
+document.getElementById('opt').innerHTML=opt.map(i=>card(i,1)).join('');
+const S={nw:nwH,ni:niH,t:tH};
+// sky
+const sky=document.getElementById('sky'),sx=sky.getContext('2d');let stars=[],W,H,dpr=Math.min(devicePixelRatio||1,2);
+function rs(){W=innerWidth;H=innerHeight;sky.width=W*dpr;sky.height=H*dpr;sx.setTransform(dpr,0,0,dpr,0,0);stars=Array.from({length:Math.min(140,(W*H/4000)|0)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.3,p:Math.random()*6.28,s:.5+Math.random()*1.5,v:.02+Math.random()*.05,c:Math.random()<.2?'#f3a76a':'#8b9ac4'}));mkbg()}
+let bgc=document.createElement('canvas');
+function mkbg(){bgc.width=W*dpr;bgc.height=H*dpr;const c=bgc.getContext('2d'),w=bgc.width,h=bgc.height;let g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,'#e9ebfb');g.addColorStop(.45,'#f1eefa');g.addColorStop(1,'#fdeee3');c.fillStyle=g;c.fillRect(0,0,w,h);
+const blob=(x,y,r,col)=>{const q=c.createRadialGradient(x,y,0,x,y,r);for(let i=0;i<=10;i++){const k=i/10,a=Math.pow(1-k,2)*(3-2*(1-k))*(1-k)*0+ (1-k)*(1-k)*(1+2*k);q.addColorStop(k,`rgba(${col},${(a*.55).toFixed(3)})`)}c.fillStyle=q;c.fillRect(0,0,w,h)};blob(w*.85,h*.08,w*.9,'205,212,255');blob(w*.1,h*.95,w*1.1,'255,200,160');
+// dither to kill banding
+const id=c.getImageData(0,0,w,h),d=id.data;for(let i=0;i<d.length;i+=4){const n=(Math.random()-.5)*3;d[i]+=n;d[i+1]+=n;d[i+2]+=n}c.putImageData(id,0,0)}
+rs();addEventListener('resize',rs);
+const charts=[...document.querySelectorAll('canvas.ch,canvas.ring')];
+function fit(c){const r=c.getBoundingClientRect();if(c.width!==Math.round(r.width*dpr)){c.width=r.width*dpr;c.height=r.height*dpr}return [r.width,r.height]}
+let t0=performance.now(),run=true,vis=new Set(charts);
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?vis.add(e.target):vis.delete(e.target)));charts.forEach(c=>io.observe(c));
+const ease=x=>1-Math.pow(1-Math.min(1,Math.max(0,x)),3);
+function draw(now){if(!run)return;const t=(now-t0)/1000;
+sx.drawImage(bgc,0,0,W,H);
+for(const s of stars){s.y-=s.v;if(s.y<0)s.y=H;const a=.25+.55*(.5+.5*Math.sin(t*s.s+s.p));sx.globalAlpha=a;sx.fillStyle=s.c;sx.beginPath();if(s.r>1.25){const r=s.r*2.2;sx.moveTo(s.x,s.y-r);sx.quadraticCurveTo(s.x,s.y,s.x+r,s.y);sx.quadraticCurveTo(s.x,s.y,s.x,s.y+r);sx.quadraticCurveTo(s.x,s.y,s.x-r,s.y);sx.quadraticCurveTo(s.x,s.y,s.x,s.y-r)}else sx.arc(s.x,s.y,s.r,0,6.28);sx.fill()}
+sx.globalAlpha=1;
+for(const c of vis){const x=c.getContext('2d'),[w,h]=fit(c);x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,w,h);
+ if(!c._t)c._t=now;const pr=ease((now-c._t)/1600);
+ if(c.classList.contains('ring')){const p=+c.dataset.p/100,R=w/2-8,cx=w/2;x.lineWidth=w>50?6:4.5;x.strokeStyle='rgba(110,140,220,.15)';x.beginPath();x.arc(cx,cx,R,0,6.28);x.stroke();
+  const gr=x.createLinearGradient(0,0,w,w);gr.addColorStop(0,'#ff7a2f');gr.addColorStop(1,'#ffb45c');x.strokeStyle=gr;x.lineCap='round';x.shadowColor='rgba(255,140,60,.55)';x.shadowBlur=10+4*Math.sin(t*2);x.beginPath();x.arc(cx,cx,R,-1.5708,-1.5708+6.283*p*pr);x.stroke();x.shadowBlur=0;
+  if(w>50){x.fillStyle='#0f1b38';x.font='800 14px system-ui';x.textAlign='center';x.textBaseline='middle';x.fillText(Math.round(p*100*pr)+'%',cx,cx)}continue}
+ const v=S[c.dataset.s],mn=Math.min(...v)*.95,mx=Math.max(...v),pad=4,yy=k=>h-pad-(k-mn)/(mx-mn)*(h-pad*2),xx=i=>pad+i*(w-pad*2)/(v.length-1);
+ const col=c.dataset.c==='blue'?['#4f7df0','79,125,240']:['#ff8c3c','255,140,60'];
+ if(c.dataset.k==='bar'){const n=v.length,top0=22,bw=Math.min(10,(w/n)*.38),av=v.reduce((p,q)=>p+q)/n,ay=h-(av/mx)*(h-top0);
+ v.forEach((k,i)=>{const bp=ease((now-c._t)/1200-i*.05),bx=i*w/n+(w/n-bw)/2,top=h-(k/mx)*(h-top0)*bp,cur=i===n-1;const gr=x.createLinearGradient(0,top,0,h);gr.addColorStop(0,cur?'#ff8c3c':'#16a36a');gr.addColorStop(1,cur?'rgba(255,180,92,.35)':'rgba(120,226,180,.35)');x.fillStyle=gr;x.beginPath();x.roundRect?x.roundRect(bx,top,bw,h-top,[bw/2,bw/2,2,2]):x.rect(bx,top,bw,h-top);x.fill();
+ if(cur&&bp>.98){const lb=eur(k),fw=x.measureText(lb).width;x.font='800 11px system-ui';const tw=x.measureText(lb).width+14,px=Math.min(w-tw,bx+bw/2-tw/2),py=top-20;x.fillStyle='#ff8c3c';x.globalAlpha=.9+.1*Math.sin(t*2);x.beginPath();x.roundRect(px,py,tw,17,9);x.fill();x.globalAlpha=1;x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.fillText(lb,px+tw/2,py+9)}});
+ x.setLineDash([4,4]);x.strokeStyle='rgba(20,33,61,.35)';x.lineWidth=1;x.beginPath();x.moveTo(0,ay);x.lineTo(w,ay);x.stroke();x.setLineDash([]);x.fillStyle='rgba(20,33,61,.5)';x.font='700 10px system-ui';x.textAlign='left';x.textBaseline='bottom';x.fillText('avg '+eur(av),2,ay-2);continue}
+ const last=(v.length-1)*pr,pts=[];for(let i=0;i<=Math.floor(last);i++)pts.push([xx(i),yy(v[i])]);const fi=Math.floor(last),fr=last-fi;if(fi<v.length-1)pts.push([xx(fi)+(xx(fi+1)-xx(fi))*fr,yy(v[fi])+(yy(v[fi+1])-yy(v[fi]))*fr]);
+ const gr=x.createLinearGradient(0,0,0,h);gr.addColorStop(0,`rgba(${col[1]},.22)`);gr.addColorStop(1,`rgba(${col[1]},0)`);x.fillStyle=gr;x.beginPath();x.moveTo(pts[0][0],h);pts.forEach(p=>x.lineTo(p[0],p[1]));x.lineTo(pts[pts.length-1][0],h);x.fill();
+ x.strokeStyle=col[0];x.lineWidth=2.4;x.lineJoin='round';x.shadowColor=`rgba(${col[1]},.35)`;x.shadowBlur=6;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.stroke();
+ const e=pts[pts.length-1];x.shadowBlur=0;x.fillStyle=`rgba(${col[1]},${.18+.1*Math.sin(t*3)})`;x.beginPath();x.arc(e[0],e[1],7,0,6.28);x.fill();x.fillStyle='#fff';x.strokeStyle=col[0];x.lineWidth=2;x.beginPath();x.arc(e[0],e[1],3.5,0,6.28);x.fill();x.stroke();x.shadowBlur=0}
+requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+document.addEventListener('visibilitychange',()=>{run=!document.hidden;document.body.classList.toggle('paused',!run);if(run)requestAnimationFrame(draw)});
+</script></body></html>
